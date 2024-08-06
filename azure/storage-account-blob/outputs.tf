@@ -68,3 +68,7 @@ output "primary_connection_string" {
 output "cdn_endpoint_name" {
   value = azurerm_cdn_endpoint.main.name
 }
+
+output "cdn_endpoint_cname" {
+  value = "https://${azurerm_cdn_endpoint.main.name}.azureedge.net"
+}
