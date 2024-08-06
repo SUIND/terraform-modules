@@ -77,6 +77,7 @@ resource "azurerm_cdn_endpoint" "main" {
   resource_group_name = var.resource_group_name
   location            = var.location
   is_https_allowed    = true
+  origin_host_header = local.clean_blob_endpoint
 
   is_compression_enabled    = true
   content_types_to_compress = [
