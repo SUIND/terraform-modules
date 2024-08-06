@@ -46,3 +46,44 @@ resource "azurerm_storage_account" "main" {
     type = "SystemAssigned"
   }
 }
+
+resource "azurerm_storage_container" "main" {
+  name                  = var.storage_container_name
+  storage_account_name  = azurerm_storage_account.main.name
+  container_access_type = "blob" # enable Anonymous read access for blobs
+}
+
+resource "azurerm_cdn_profile" "main" {
+  name                = var.cdn_profile_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  sku                 = var.cdn_sku
+  tags                = var.tags
+}
+
+resource "azurerm_cdn_endpoint" "main" {
+  name                = var.cdn_endpoint_name
+  profile_name        = azurerm_cdn_profile.main.name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  is_https_allowed    = true
+
+  is_compression_enabled    = true
+  content_types_to_compress = [
+    "text/plain",
+    "text/css",
+    "text/javascript",
+    "application/x-javascript",
+    "application/javascript",
+    "application/json",
+    "image/jpeg",
+    "image/png"
+  ]
+
+  origin {
+    name      = azurerm_storage_account.main.name
+    host_name = azurerm_storage_account.main.primary_blob_endpoint
+  }
+
+  tags = var.tags
+}

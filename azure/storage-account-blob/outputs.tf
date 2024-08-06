@@ -64,3 +64,7 @@ output "identity_id" {
 output "primary_connection_string" {
   value = azurerm_storage_account.main.primary_connection_string
 }
+
+output "cdn_endpoint_name" {
+  value = azurerm_cdn_endpoint.main.name
+}

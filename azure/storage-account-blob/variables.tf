@@ -82,3 +82,24 @@ variable "queue_properties" {
 variable "tags" {
   type = any
 }
+
+variable "storage_container_name" {
+  description = "The name of the storage container."
+  type        = string
+}
+
+variable "cdn_profile_name" {
+  description = "The name of the CDN profile."
+  type        = string
+}
+
+variable "cdn_sku" {
+  description = "The SKU of the CDN profile."
+  type        = string
+  default     = "Standard_Microsoft"  # Options: Standard_Microsoft, Standard_Akamai, Standard_Verizon, Premium_Verizon
+}
+
+variable "cdn_endpoint_name" {
+  description = "The name of the CDN endpoint."
+  type        = string
+}
