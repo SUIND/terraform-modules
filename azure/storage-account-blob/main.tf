@@ -41,16 +41,13 @@ resource "azurerm_storage_account" "main" {
       container_delete_retention_policy {
         days = var.blob_properties.container_delete_retention_policy
       }
-    }
-  }
-
-  blob_properties{
-    cors_rule{
-    allowed_headers = ["*"]
-    allowed_methods = ["GET","HEAD"]
-    allowed_origins = ["*"] # TODO use cdn endpoint
-    exposed_headers = ["*"]
-    max_age_in_seconds = 3600
+      cors_rule{
+        allowed_headers = ["*"]
+        allowed_methods = ["GET","HEAD"]
+        allowed_origins = ["*"] # TODO use cdn endpoint
+        exposed_headers = ["*"]
+        max_age_in_seconds = 3600
+      }
     }
   }
 
