@@ -54,7 +54,7 @@ resource "azurerm_storage_container" "main" {
 }
 
 resource "azurerm_cdn_profile" "main" {
-  name                = var.cdn_profile_name
+  name                = "${local.alphanumeric_name}-cdn"
   resource_group_name = var.resource_group_name
   location            = var.location
   sku                 = var.cdn_sku
@@ -62,7 +62,7 @@ resource "azurerm_cdn_profile" "main" {
 }
 
 resource "azurerm_cdn_endpoint" "main" {
-  name                = var.cdn_endpoint_name
+  name                = local.alphanumeric_name
   profile_name        = azurerm_cdn_profile.main.name
   resource_group_name = var.resource_group_name
   location            = var.location
