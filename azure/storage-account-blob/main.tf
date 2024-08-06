@@ -1,6 +1,8 @@
 locals {
   max_length        = 24
   alphanumeric_name = substr(replace(var.name, "/[^a-z0-9]/", ""), 0, local.max_length)
+  trimmed_blob_endpoint = trim(azurerm_storage_account.main.primary_blob_endpoint, "/")
+  clean_blob_endpoint   = replace(local.trimmed_blob_endpoint, "https://", "")
 }
 
 resource "azurerm_storage_account" "main" {
@@ -62,7 +64,7 @@ resource "azurerm_cdn_profile" "main" {
 }
 
 resource "azurerm_cdn_endpoint" "main" {
-  name                = azurerm_storage_account.main.name
+  name                = "${azurerm_storage_account.main.name}-endpoint"
   profile_name        = azurerm_cdn_profile.main.name
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -82,7 +84,7 @@ resource "azurerm_cdn_endpoint" "main" {
 
   origin {
     name      = azurerm_storage_account.main.name
-    host_name = azurerm_storage_account.main.primary_blob_endpoint
+    host_name = local.clean_blob_endpoint
   }
 
   tags = var.tags
