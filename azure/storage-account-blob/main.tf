@@ -44,6 +44,16 @@ resource "azurerm_storage_account" "main" {
     }
   }
 
+  blob_properties{
+    cors_rule{
+    allowed_headers = ["*"]
+    allowed_methods = ["GET","HEAD"]
+    allowed_origins = ["*"] # TODO use cdn endpoint
+    exposed_headers = ["*"]
+    max_age_in_seconds = 3600
+    }
+  }
+
   identity {
     type = "SystemAssigned"
   }
@@ -55,17 +65,6 @@ resource "azurerm_storage_container" "main" {
   container_access_type = "blob" # enable Anonymous read access for blobs
 }
 
-resource "azurerm_storage_account_cors_rule" "example" {
-  storage_account_name = azurerm_storage_account.main.name
-
-  cors_rule {
-    allowed_origins = ["*"] # TODO Or specify your CDN origin
-    allowed_methods = ["GET", "HEAD"]
-    allowed_headers = ["*"]
-    exposed_headers = ["*"]
-    max_age_in_seconds = 3600
-  }
-}
 
 resource "azurerm_cdn_profile" "main" {
   name                = "${azurerm_storage_account.main.name}-cdn"
